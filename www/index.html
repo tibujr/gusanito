@@ -17,7 +17,7 @@
 
      $(document).ready(function(){
 
-        map = new GMaps({
+        /*map = new GMaps({
           el: '#map',
           lat: -12.1230026,
           lng: -77.0284943
@@ -37,7 +37,7 @@
               });  
             });
           }
-        });
+        });*/
 
         $( ".boton" ).click(function(){
           $("#instructions").html("");
@@ -53,17 +53,19 @@
             $("#dest").html("Destino - La Lujuria");
           }
 
-          map = new GMaps({
-            el: '#map',
-            lat: -12.1230026,
-            lng: -77.0284943
-          });
+          
 
           localizame();
         });
       });
 
     function dibujaRuta(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.1230026,
+        lng: -77.0284943
+      });
+
       map.travelRoute({
         origin: [latitud, longitud],
         destination: [destinoX, destinoY],
