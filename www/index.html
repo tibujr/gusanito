@@ -9,8 +9,8 @@
   <link rel="stylesheet" type="text/css" href="css/examples.css" />
   <script type="text/javascript">
     var map;
-    var latitud;
-    var longitud;
+    var latitud = -12.1230026;
+    var longitud = -77.0284943;
 
     var destinoX = -12.0677849;
     var destinoY = -76.9571282;
@@ -52,9 +52,10 @@
             destinoX = -12.0677849;
             destinoY = -76.9571282;
             $("#dest").html("Destino - La Lujuria");
-          }*/
+          }
 
-          localizame();
+          localizame();*/
+          dibujaRuta();
         });
       });
 
@@ -89,7 +90,7 @@
       destinoY = -76.9571282;
     }
 
-    function localizame() {
+    /*function localizame() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(coordenadas);
       }
@@ -99,7 +100,7 @@
       latitud = position.coords.latitude;
       longitud = position.coords.longitude;
       dibujaRuta();
-    }
+    }*/
 
   </script>
   <style type="text/css">
