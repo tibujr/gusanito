@@ -2,118 +2,55 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>localizador</title>
+  <title>GMaps.js &mdash; Markers</title>
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="js/gmaps.js"></script>
   <link rel="stylesheet" type="text/css" href="css/examples.css" />
   <script type="text/javascript">
     var map;
-    var latitud;
-    var longitud;
-
-    var destinoX;
-    var destinoY;
-
-    /*$(document).ready(function(){
-      
-      localizame();
+    $(document).ready(function(){
       map = new GMaps({
         el: '#map',
         lat: -12.1230026,
         lng: -77.0284943
       });
-    });*/
-
-     $(document).ready(function(){
-        $( ".boton" ).click(function(){
-          $("#instructions").html("");
-          var id = $(this).attr('id');
-
-          $(".row").css({ display: 'block'});
-
-          if(id == 'miraflores'){
-            destinoX = -12.1316965;
-            destinoY = -77.0245074;
-            $("#dest").html("Destino - Roinet");
-          }else{
-            destinoX = -12.0677849;
-            destinoY = -76.9571282;
-            $("#dest").html("Destino - La Lujuria");
-          }
-          localizame();
-          map = new GMaps({
-            el: '#map',
-            lat: -12.1230026,
-            lng: -77.0284943
-          });
-        });
+      map.addMarker({
+        //roinet
+        lat: -12.1230026,
+        lng: -77.0284943,
+        title: 'ROInet SAC',
+        infoWindow: {
+          content: '<p><b>ROInet SAC</b><br>Calle Schell 343 ofic. 301 - 302,<br> Miraflores, Perú</p>'
+        }
+        /*click: function(e){
+          if(console.log)
+            console.log(e);
+          alert('You clicked in this marker');
+        },
+        mouseover: function(e){
+          if(console.log)
+            console.log(e);
+        }*/
       });
-
-    function dibujaRuta(){
-      map.travelRoute({
-        origin: [latitud, longitud],
-        //destination: [-12.0677849, -76.9571282],
-        destination: [destinoX, destinoY],
-        travelMode: 'driving',
-        step: function(e){
-          $('#instructions').append('<li>'+e.instructions+'</li>');
-          $('#instructions li:eq('+e.step_number+')').delay(450*e.step_number).fadeIn(200, function(){
-            map.drawPolyline({
-              path: e.path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 6
-            });  
-          });
+      map.addMarker({
+        //La Lujuria
+        lat: -12.0677849,
+        lng: -76.9571282,
+        title: 'La Lujuria',
+        infoWindow: {
+          content: '<p><b>La Lujuria</b><br>Calle Los Agroquimicos 150,<br> La Molina, Perú</p>'
         }
       });
-    }
-
-    function localizame() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(coordenadas);
-      }
-    }
-
-    function coordenadas(position) {
-      latitud = position.coords.latitude;
-      longitud = position.coords.longitude;
-      dibujaRuta();
-    }
-
+    });
   </script>
-  <style type="text/css">
-    .boton{
-      background: black;
-      color: white;
-      display: inline-block;
-      min-width: 50px;
-      min-height: 30px;
-      cursor: pointer;
-      text-align: center;
-      margin: 0 20px;
-      padding: 10px 10px 0 10px;
-    }
-
-    .boton label{
-      display: inline-block;
-      vertical-align: middle;
-    }
-  </style>
 </head>
 <body>
-  <section>
-    <article id="miraflores" class="boton">MIRAFLORES</article>
-    <article id="molina" class="boton">LA MOLINA</article>
-  </section>
-  <h1 id="dest"></h1>
-  <div class="row" style="display:none">
+  <h1>GMaps.js &mdash; Markers</h1>
+  <div class="row">
     <div class="span11">
       <div id="map"></div>
-      <ul id="instructions">
-      </ul>
     </div>
   </div>
 </body>
-</html>
+</html> 
