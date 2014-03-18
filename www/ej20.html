@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Localizador</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style>
+        body{
+            font-family: "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Localizador mediante HTML5</h1>
+    </header>
+    <section>
+        <article>
+            <div id='map_canvas' style='width:100%; height:400px;'></div>
+        </article>
+    </section>
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+
+    <script type="text/javascript">
+        
+        var map;
+        var latitud;
+        var longitud;
+        var precision;
+        
+        $(document).ready(function() {
+            localizame();            
+        });
+        
+        function localizame() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(coordenadas, errores);
+            }else{
+                alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
+            }
+        }
+        
+        function coordenadas(position) {
+            latitud = position.coords.latitude;
+            longitud = position.coords.longitude;
+            precision = position.coords.accuracy;  
+            cargarMapa();
+            alert("Datos con una precisión de " + precision/1000 + " km, " + precision + " metros");
+        }
+        
+        function errores(err) {
+            if (err.code == 0) {
+              alert("Oops! Algo ha salido mal");
+            }
+            if (err.code == 1) {
+              alert("Oops! No has aceptado compartir tu posición");
+            }
+            if (err.code == 2) {
+              alert("Oops! No se puede obtener la posición actual");
+            }
+            if (err.code == 3) {
+              alert("Oops! Hemos superado el tiempo de espera");
+            }
+        }
+         
+        function cargarMapa() {
+            var latlon = new google.maps.LatLng(latitud,longitud);
+            var myOptions = {
+                zoom: 17,
+                center: latlon,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map($("#map_canvas").get(0), myOptions);
+            
+            var coorMarcador = new google.maps.LatLng(latitud,longitud);
+                
+            var marcador = new google.maps.Marker({
+                position: coorMarcador,
+                map: map,
+                title: "Dónde estoy?"
+            });
+            
+        }
+    
+    </script>
+</body>
+</html>
