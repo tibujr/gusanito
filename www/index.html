@@ -52,17 +52,14 @@
             destinoX = -12.0677849;
             destinoY = -76.9571282;
             $("#dest").html("Destino - La Lujuria");
-          }
+          }*/
 
-          localizame();*/
-          dibujaRuta();
+          localizame();
+          //dibujaRuta();
         });
       });
 
     function dibujaRuta(){
-
-      alert("entra");
-
       map = new GMaps({
         el: '#map',
         lat: -12.1230026,
@@ -90,9 +87,26 @@
       destinoY = -76.9571282;
     }
 
-    /*function localizame() {
+    function localizame() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(coordenadas);
+        navigator.geolocation.getCurrentPosition(coordenadas, errores);
+      }else{
+        alert('no soporta geolocalización.');
+      }
+    }
+
+    function errores(err) {
+      if (err.code == 0) {
+        alert("Algo ha salido mal");
+      }
+      if (err.code == 1) {
+         alert("No has aceptado compartir tu posición");
+      }
+      if (err.code == 2) {
+        alert("No se puede obtener la posición actual");
+      }
+      if (err.code == 3) {
+        alert("Hemos superado el tiempo de espera");
       }
     }
 
@@ -100,7 +114,7 @@
       latitud = position.coords.latitude;
       longitud = position.coords.longitude;
       dibujaRuta();
-    }*/
+    }
 
   </script>
   <style type="text/css">
