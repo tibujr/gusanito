@@ -1,153 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>localizador</title>
-  <script type="text/javascript" src="js/jquery.js"></script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-  <script type="text/javascript" src="js/gmaps.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/examples.css" />
-  <script type="text/javascript">
-    var map;
-    var latitud = -12.1230026;
-    var longitud = -77.0284943;
-
-    var destinoX = -12.0677849;
-    var destinoY = -76.9571282;
-
-     $(document).ready(function(){
-
-        /*map = new GMaps({
-          el: '#map',
-          lat: -12.1230026,
-          lng: -77.0284943
-        });
-        map.travelRoute({
-          origin: [-12.1316965, -77.0245074],
-          destination: [-12.1230026, -77.0284943],
-          travelMode: 'driving',
-          step: function(e){
-            $('#instructions').append('<li>'+e.instructions+'</li>');
-            $('#instructions li:eq('+e.step_number+')').delay(450*e.step_number).fadeIn(200, function(){
-              map.drawPolyline({
-                path: e.path,
-                strokeColor: '#131540',
-                strokeOpacity: 0.6,
-                strokeWeight: 6
-              });  
-            });
-          }
-        });*/
-
-        $( ".boton" ).click(function(){
-          
-          $("#instructions").html("");
-          var id = $(this).attr('id');
-
-          if(id == 'miraflores'){
-            destinoX = -12.1316965;
-            destinoY = -77.0245074;
-            $("#dest").html("Destino - Roinet");
-          }/*else{
-            destinoX = -12.0677849;
-            destinoY = -76.9571282;
-            $("#dest").html("Destino - La Lujuria");
-          }*/
-
-          localizame();
-          //dibujaRuta();
-        });
-      });
-
-    function dibujaRuta(){
-      map = new GMaps({
-        el: '#map',
-        lat: -12.1230026,
-        lng: -77.0284943
-      });
-
-      map.travelRoute({
-        origin: [latitud, longitud],
-        destination: [destinoX, destinoY],
-        travelMode: 'driving',
-        step: function(e){
-          $('#instructions').append('<li>'+e.instructions+'</li>');
-          $('#instructions li:eq('+e.step_number+')').delay(450*e.step_number).fadeIn(200, function(){
-            map.drawPolyline({
-              path: e.path,
-              strokeColor: '#131540',
-              strokeOpacity: 0.6,
-              strokeWeight: 6
-            });  
-          });
+    <meta charset="utf-8">
+    <title>Localizador</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style>
+        body{
+            font-family: "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
         }
-      });
-
-      destinoX = -12.0677849;
-      destinoY = -76.9571282;
-    }
-
-    function localizame() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(coordenadas, errores);
-      }else{
-        alert('no soporta geolocalización.');
-      }
-    }
-
-    function errores(err) {
-      if (err.code == 0) {
-        alert("Algo ha salido mal");
-      }
-      if (err.code == 1) {
-         alert("No has aceptado compartir tu posición");
-      }
-      if (err.code == 2) {
-        alert("No se puede obtener la posición actual");
-      }
-      if (err.code == 3) {
-        alert("Hemos superado el tiempo de espera");
-      }
-    }
-
-    function coordenadas(position) {
-      latitud = position.coords.latitude;
-      longitud = position.coords.longitude;
-      dibujaRuta();
-    }
-
-  </script>
-  <style type="text/css">
-    .boton{
-      background: black;
-      color: white;
-      display: inline-block;
-      min-width: 50px;
-      min-height: 30px;
-      cursor: pointer;
-      text-align: center;
-      margin: 0 20px;
-      padding: 10px 10px 0 10px;
-    }
-
-    .boton label{
-      display: inline-block;
-      vertical-align: middle;
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <section>
-    <article id="miraflores" class="boton">MIRAFLORES</article>
-    <article id="molina" class="boton">LA MOLINA</article>
-  </section>
-  <h1 id="dest"></h1>
-  <div class="row">
-    <div class="span11">
-      <div id="map"></div>
-      <ul id="instructions">
-      </ul>
-    </div>
-  </div>
+    <header>
+        <h1>Localizador mediante HTML5</h1>
+    </header>
+    <section>
+        <article>
+            <div id='map_canvas' style='width:100%; height:400px;'></div>
+        </article>
+    </section>
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+
+    <script type="text/javascript">
+        
+        var map;
+        var latitud;
+        var longitud;
+        var precision;
+        
+        $(document).ready(function() {
+            localizame();            
+        });
+        
+        function localizame() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(coordenadas, errores);
+            }else{
+                alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
+            }
+        }
+        
+        function coordenadas(position) {
+            latitud = position.coords.latitude;
+            longitud = position.coords.longitude;
+            precision = position.coords.accuracy;  
+            cargarMapa();
+            alert("Datos con una precisión de " + precision/1000 + " km, " + precision + " metros");
+        }
+        
+        function errores(err) {
+            if (err.code == 0) {
+              alert("Oops! Algo ha salido mal");
+            }
+            if (err.code == 1) {
+              alert("Oops! No has aceptado compartir tu posición");
+            }
+            if (err.code == 2) {
+              alert("Oops! No se puede obtener la posición actual");
+            }
+            if (err.code == 3) {
+              alert("Oops! Hemos superado el tiempo de espera");
+            }
+        }
+         
+        function cargarMapa() {
+            var latlon = new google.maps.LatLng(latitud,longitud);
+            var myOptions = {
+                zoom: 17,
+                center: latlon,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map($("#map_canvas").get(0), myOptions);
+            
+            var coorMarcador = new google.maps.LatLng(latitud,longitud);
+                
+            var marcador = new google.maps.Marker({
+                position: coorMarcador,
+                map: map,
+                title: "Dónde estoy?"
+            });
+            
+        }
+    
+    </script>
 </body>
 </html>
