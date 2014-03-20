@@ -34,7 +34,7 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         navigator.geolocation.getCurrentPosition(app.onSuccess, app.onError);
-    }
+    },
 
     onSuccess: function(position){
         var longitude = position.coords.longitude;
