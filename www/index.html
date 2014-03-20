@@ -58,8 +58,9 @@
               alert("Oops! No has aceptado compartir tu posición");
             }
             if (err.code == 2) {
-                alert('message: ' + error.message);
-              //alert("Oops! No se puede obtener la posición actual");
+                alert("Oops! No se puede obtener la posición actual");
+                alert('message: ' + err.message);
+              
             }
             if (err.code == 3) {
               alert("Oops! Hemos superado el tiempo de espera");
