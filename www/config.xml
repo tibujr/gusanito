@@ -56,7 +56,7 @@
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="*" />
     <rim:permissions>
-        <rim:permit>read_geolocation</rim:permit>
+        <rim:permit></rim:permit>
     </rim:permissions>
 
     <access uri="*" />
