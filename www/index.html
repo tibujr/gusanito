@@ -38,7 +38,8 @@
         function localizame() {
             var options = { timeout: 31000, enableHighAccuracy: true, maximumAge: 90000};
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(coordenadas, errores, options);
+                navigator.geolocation.watchPosition(coordenadas, errores, options);
+                //navigator.geolocation.getCurrentPosition(coordenadas, errores, options);
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
             }
