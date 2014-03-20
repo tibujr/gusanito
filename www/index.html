@@ -36,7 +36,7 @@
         
         function localizame() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(coordenadas, errores, {timeout:10000});
+                navigator.geolocation.getCurrentPosition(coordenadas, errores);
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
             }
