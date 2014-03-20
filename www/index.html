@@ -40,7 +40,7 @@
             var options = { timeout: 31000, enableHighAccuracy: true, maximumAge: 90000};
             if (navigator.geolocation) {
                 //navigator.geolocation.watchPosition(coordenadas, errores, options);
-                navigator.geolocation.getCurrentPosition(coordenadas, errores, /*options*/{enableHighAccuracy: true, timeout: 30000, maximumAge: 30000});
+                navigator.geolocation.getCurrentPosition(coordenadas, errores, /*options*/{enableHighAccuracy: false, timeout: 5000, maximumAge: Infinity});
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
             }
