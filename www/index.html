@@ -35,24 +35,11 @@
         });
         
         function localizame() {
-            /*if (navigator.geolocation) {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(coordenadas, errores, {timeout:10000});
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
-            }*/
-            var location_timeout = setTimeout("geolocFail()", 10000);
-
-            navigator.geolocation.getCurrentPosition(function(position) {
-                clearTimeout(location_timeout);
-
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-                alert("X : "+lat+" - Y :"+lng)
-                //geocodeLatLng(lat, lng);
-            }, function(error) {
-                clearTimeout(location_timeout);
-                //geolocFail();
-            });
+            }
         }
         
         function coordenadas(position) {
@@ -71,7 +58,8 @@
               alert("Oops! No has aceptado compartir tu posición");
             }
             if (err.code == 2) {
-              alert("Oops! No se puede obtener la posición actual");
+                alert('message: ' + error.message);
+              //alert("Oops! No se puede obtener la posición actual");
             }
             if (err.code == 3) {
               alert("Oops! Hemos superado el tiempo de espera");
