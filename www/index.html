@@ -32,15 +32,15 @@
         var precision;
         
         $(document).ready(function() {
-            document.addEventListener("deviceready", localizame, false);
+            //document.addEventListener("deviceready", localizame, false);
             localizame();            
         });
         
         function localizame() {
             var options = { timeout: 31000, enableHighAccuracy: true, maximumAge: 90000};
             if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(coordenadas, errores, options);
-                //navigator.geolocation.getCurrentPosition(coordenadas, errores, options);
+                //navigator.geolocation.watchPosition(coordenadas, errores, options);
+                navigator.geolocation.getCurrentPosition(coordenadas, errores, /*options*/{enableHighAccuracy: true, timeout: 30000, maximumAge: 30000});
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
             }
@@ -51,7 +51,7 @@
             longitud = position.coords.longitude;
             precision = position.coords.accuracy;  
             cargarMapa();
-            alert("Datos con una precisión de " + precision/1000 + " km, " + precision + " metros");
+            //alert("Datos con una precisión de " + precision/1000 + " km, " + precision + " metros");
         }
         
         function errores(err) {
