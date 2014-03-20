@@ -44,10 +44,10 @@ var app = {
         var mapOptions = {
             center: latLong,
             zoom: 16,
-            mapTypeId: google.maps.mapTypeId.ROADMAP  //MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
-        var map=new google.maps.Map(document.getElementById("geolocation"), mapOptions);
+        var map = new google.maps.Map(document.getElementById("geolocation"), mapOptions);
     },
 
     onError: function(error){
