@@ -34,11 +34,23 @@
         });
         
         function localizame() {
-            if (navigator.geolocation) {
+            /*if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(coordenadas, errores);
             }else{
                 alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
-            }
+            }*/
+            var startPos;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                startPos = position.coords.latitude+" - "+position.coords.longitude;
+                alert(startPos);
+            }, function(error) {
+                alert('A ocurrido un error. Error code: ' + error.code);
+                // error.code can be:
+                //   0: unknown error
+                //   1: permission denied
+                //   2: position unavailable (error response from locaton provider)
+                //   3: timed out
+            });
         }
         
         function coordenadas(position) {
