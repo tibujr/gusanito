@@ -1,35 +1,122 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta name="viewport" content="width=320; user-scalable=no" />
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<title>SimpleNote</title>
-<link href="css/jquery.mobile-1.0rc1.min.css" rel="stylesheet" type="text/css" />
-<!--<script src="http://debug.phonegap.com/target/target-script-min.js#raymondcamden"></script>-->
-<script type="text/javascript" charset="utf-8" src="js/phonegap-1.1.0.js"></script>
-<script src="js/jquery-1.6.4.js"></script>
-<script src="js/jquery.mobile-1.0rc1.min.js"></script>
-<script src="js/main.js"></script>
+    <meta name="viewport" content="width=default-width; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Embedded Sql Example</title>
+    <script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        // variables globales
+        var db;
+        var shortName = 'WebSqlDB';
+        var version = '1.0';
+        var displayName = 'WebSqlDB';
+        var maxSize = 65535;
+         
+        //esto se llama cuando un error ocurre en una transacción
+        function errorHandler(transaction, error) {
+           alert('Error: ' + error.message + ' code: ' + error.code);
+         
+        }
+         
+        //esto se llama cuando ocurre una transacción exitosa
+        function successCallBack() {
+           alert("DEBUGGING: success");
+         
+        }
+         
+        function nullHandler(){};
+         
+        //Se le llama cuando se carga la aplicación
+        function onBodyLoad(){
+         
+            // Esta alerta se utiliza para asegurarse de que la aplicación se carga correctamente puede comentar esto una vez que tenga la solicitud de trabajo
+            alert("Funcion onBodyLoad activado :D");
+             
+             if (!window.openDatabase) {
+               // No todos los dispositivos móviles compatibles con las bases de datos si no, la siguiente alerta mostrará lo que indica que el dispositivo no será albe para ejecutar esta aplicación
+               alert('Las bases de datos no son compatibles con este navegador.');
+               return;
+             }
+             
+            /* esta línea intenta abrir la base de datos de forma local en el dispositivo si no existe, se creará y devolver un objeto de base de datos almacenada en la variable db*/
+             db = openDatabase(shortName, version, displayName,maxSize);
+             
+            // esta línea va a tratar de crear la tabla de usuario en la base de datos recién creada / openned
+             db.transaction(function(tx){
+             
+              //puede descomentar la siguiente línea si desea que la tabla de usuario que se vacía cada vez que la aplicación se ejecuta
+              // tx.executeSql( 'DROP TABLE User',nullHandler,nullHandler);
+             
+              // this line actually creates the table User if it does not exist and sets up the three columns and their types useful if you want to pull back distinct rows
+              // easily from the table.
+               tx.executeSql( 'CREATE TABLE IF NOT EXISTS User(UserId INTEGER NOT NULL PRIMARY KEY, FirstName TEXT NOT NULL, LastName TEXT NOT NULL)', [],nullHandler,errorHandler);
+             },errorHandler,successCallBack);
+         
+        }
+         
+        // list the values in the database to the screen using jquery to  update the #lbUsers element
+        function ListDBValues() {
+         
+         if (!window.openDatabase) {
+          alert('Databases are not supported in this browser.');
+          return;
+         }
+         
+        // this line clears out any content in the #lbUsers element on the  page so that the next few lines will show updated
+        // content and not just keep repeating lines
+         $('#lbUsers').html('');
+         
+        // this next section will select all the content from the User table and then go through it row by row
+        // appending the UserId  FirstName  LastName to the  #lbUsers element on the page
+         db.transaction(function(transaction) {
+           transaction.executeSql('SELECT * FROM User;', [],
+             function(transaction, result) {
+              if (result != null && result.rows != null) {
+                for (var i = 0; i < result.rows.length; i++) {
+                  var row = result.rows.item(i);
+                  $('#lbUsers').append('<br>' + row.UserId + '. ' +
+        row.FirstName+ ' ' + row.LastName);
+                }
+              }
+             },errorHandler);
+         },errorHandler,nullHandler);
+         
+         return;
+         
+        }
+         
+        // this is the function that puts values into the database using the values from the text boxes on the screen
+        function AddValueToDB() {
+         
+         if (!window.openDatabase) {
+           alert('Databases are not supported in this browser.');
+           return;
+         }
+         
+        // this is the section that actually inserts the values into the User  table
+         db.transaction(function(transaction) {
+           transaction.executeSql('INSERT INTO User(FirstName, LastName) VALUES (?,?)',[$('#txFirstName').val(), $('#txLastName').val()], nullHandler,errorHandler);
+           });
+         
+        // this calls the function that will show what is in the User table in the database
+         ListDBValues();
+         
+         return false;
+         
+        }
+    </script>
 </head>
-
-<body onload="init();">
-
-
-<div data-role="page" id="homePage">
-
-	<div data-role="header">
-		<h1>SimpleNotes</h1>
-	</div>
-
-	<div data-role="content" id="mainContent">	
-		<ul data-role="listview" id="noteTitleList"></ul>
-	</div>
-
-	<div data-role="footer" class="ui-bar">
-		<a href="edit.html" data-role="button" data-icon="plus">Add Note</a>
-	</div>
-
-</div>
-
+<body onload="onBodyLoad()">
+<h1>WebSQL</h1>
+<input id="txFirstName" type="text" placeholder="FirstName">
+<input id="txLastName" type="text" placeholder="Last Name">
+<input type="button" value="Add record" onClick="AddValueToDB()">
+<input type="button" value="Refresh" onClick="ListDBValues()"> <br>
+<br>
+<span style="font-weight:bold;">Currently stored values:</span>
+<span id="lbUsers"></span>
 </body>
-</html>
+</html> 
