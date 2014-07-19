@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cordova Online Example</title>
+ 
+    <script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+ 
+    // Call onDeviceReady when Cordova is loaded.
+    //
+    // At this point, the document has loaded but cordova-x.x.x.js has not.
+    // When Cordova is loaded and talking with the native device,
+    // it will call the event `deviceready`.
+    //
+    function onLoad() {
+        document.addEventListener("online", onOnline, false);
+        document.addEventListener("offline", onOffline, false);
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+ 
+    // Cordova is loaded and it is now safe to make calls Cordova methods
+    //
+    function onDeviceReady() {
+        //console.log("onDeviceReady");
+        alert("onDeviceReady")
+    }
+ 
+    // Handle the online event
+    //
+    function onOnline() {
+        //console.log("onOnline");
+        alert("onOnLine")
+    }
+ 
+    function onOffline() {
+        alert("onOffline");
+    }
+        
+    </script>
+  </head>
+  <body onload="onLoad()">
+  </body>
+</html>
